@@ -1,0 +1,31 @@
+Caching
+In-Memory Caching (Private Caching): Keeps data in server’s memory. There is a drawback for using that approach for caching. 
+That is inconsistency of the data for different instances. For example, let’s say we have 2 instances and load balancer configures them. 
+User-A connected to the first instance and User-B connected to the second. User-A got data on a specific time and User-B tried to get data after a while. 
+After they got data, that data was cached in memory of the instances' own server. So in different instances there is different data. 
+And if load balancer connects User-A to the second instance, and after refreshing the browser, 
+load balancer connects User-A to the first instance, there will be inconsistency. 
+It can be prevented by using the “Sticky Session” method. That means, at the beginning if User-A connected to the first instance, 
+this user will always be redirected to the first instance by load balancer. It is not an ideal solution but it can be used.
+
+Distributed Caching (Shared Caching): Keeps data in a caching server. So each instance has to connect to the shared caching server to get data from cache. 
+So there won’t be any inconsistency for the data. Because cache data is kept in the same place for every instance. 
+There are 2 drawbacks for that approach. Those are; there should be much more effort to implement that approach to the project and
+the second one is that it takes more time to get data from the shared caching server than in-memory caching.
+
+Saving Cache
+On-Demand Caching: Get data from the database and save it to the caching server when a new request shows up.
+PrePopulation Caching: Get data from the database and save it to the caching server whenever the instance runs. 
+For example, when the server starts the web project, some of the selected data will be written to the caching server.
+
+Cache Lifespan
+Absolute Time: It can be called lifespan. Let’s say we saved data to the caching server and set its absolute time to 5 minutes. 
+After 5 minutes, this data will be removed from the caching server.
+Sliding Time: Let’s say we set sliding time to 5 minutes. If the data is requested in 5 minutes, 
+lifespan increases 5 minutes more. When lifespan is over and no request comes, this data will be removed from the caching server. 
+There is one drawback of that approach and that is we may always reach the old data. Because every 5 minutes if one request comes, 
+that means this data will never be removed and so even if a new record comes to that data, the client will use the cached(old) data. 
+It can be prevented by using both absolute and sliding time approaches. Let’s say, we set absolute time to 10 minutes and 
+set sliding time to 2 minutes. That means every 2 minutes at least one request should show up. If it is not the case, 
+the data will be removed in 2 minutes. But if at least one request always shows up in 2 minutes, we’ll have max 10 minutes to show that cached data. 
+Because we set absolute time to 10 minutes and by using sliding time we cannot exceed the absolute time. So that can prevent us from always using the old data.

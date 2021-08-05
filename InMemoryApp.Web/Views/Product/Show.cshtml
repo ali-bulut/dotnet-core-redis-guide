@@ -1,0 +1,10 @@
+﻿@page
+@{
+    // as => if data can be converted to Product, it will return the converted Product data, if it cannot be it will return null.
+    // is => if data can be converted to Product, it will return true, if not it will return false.
+    Product p = ViewBag.product as Product; 
+}
+
+<h1>@ViewBag.time</h1>
+<h1>@ViewBag.callback</h1>
+<h2>@p.Id => @p.Name : $@p.Price</h2>
