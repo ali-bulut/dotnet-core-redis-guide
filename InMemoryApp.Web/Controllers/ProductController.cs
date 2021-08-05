@@ -33,6 +33,12 @@ namespace InMemoryApp.Web.Controllers
                 options.AbsoluteExpiration = DateTime.Now.AddMinutes(1);
                 options.SlidingExpiration = TimeSpan.FromSeconds(10);
 
+                // CacheItemPriority.Low, CacheItemPriority.Normal, CacheItemPriority.High, CacheItemPriority.NeverRemove
+                // when the memory is full, the program will start to remove keys by checking at priorities of the keys.
+                // If we set all keys' priorities as NeverRemove and program tries to add new data to memory when memory is full, it will raise an exception
+                // because program cannot remove any of the old keys and so cannot add new data.
+                options.Priority = CacheItemPriority.High;
+
                 _memoryCache.Set<string>("time", DateTime.Now.ToString(), options);
             }
 
