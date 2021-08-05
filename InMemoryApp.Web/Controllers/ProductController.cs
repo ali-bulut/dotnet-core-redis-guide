@@ -19,7 +19,29 @@ namespace InMemoryApp.Web.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            _memoryCache.Set<string>("time", DateTime.Now.ToString());
+            // first way to check if time is in memory
+            if (string.IsNullOrEmpty(_memoryCache.Get<string>("time"))){
+                _memoryCache.Set<string>("time", DateTime.Now.ToString());
+            }
+
+            // second way
+            if(!(_memoryCache.TryGetValue<string>("time", out string timeCache)))
+            {
+                // if there is already time in memory, timeCache is the value of time.
+                _memoryCache.Set<string>("time", DateTime.Now.ToString());
+            }
+
+            // third way => if there is already time in memory, it will return the time, if there is not, it will set
+            // time by using the second parameter and return it.
+            _memoryCache.GetOrCreate<string>("time", entry =>
+            {
+                // by using entry we can set the cache properties such as lifespan or etc.
+                return DateTime.Now.ToString();
+            });
+
+            // it will remove time from the memory.
+            //_memoryCache.Remove("time");
+
             return View();
         }
 
