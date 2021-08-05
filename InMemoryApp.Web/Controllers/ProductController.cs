@@ -19,6 +19,13 @@ namespace InMemoryApp.Web.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
+            _memoryCache.Set<string>("time", DateTime.Now.ToString());
+            return View();
+        }
+
+        public IActionResult Show()
+        {
+            ViewBag.time = _memoryCache.Get<string>("time");
             return View();
         }
     }
