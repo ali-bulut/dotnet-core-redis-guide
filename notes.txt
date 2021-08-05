@@ -29,3 +29,75 @@ It can be prevented by using both absolute and sliding time approaches. Let’s 
 set sliding time to 2 minutes. That means every 2 minutes at least one request should show up. If it is not the case, 
 the data will be removed in 2 minutes. But if at least one request always shows up in 2 minutes, we’ll have max 10 minutes to show that cached data. 
 Because we set absolute time to 10 minutes and by using sliding time we cannot exceed the absolute time. So that can prevent us from always using the old data.
+
+
+
+REDIS
+
+** Data Types (Max 512MB data for one key-value pair.)
+We are able to save any type of data to any type of Redis Data Type. There is no restriction for it. 
+For example we can save image data(firstly should be converted to byte) as a string and as an element of the list both.
+
+1- String (not regular string, it can be referred to anything. Basic redis data type)
+
+SET name alibulut => To save the following data to redis. Key: name Value: alibulut 
+GET name => To get the value of the “name” key. => (“ali”)
+GETRANGE name 1 4 => start to get value starting from 1st index until reaches 4th index. 1 and 4 both inclusive. => (“libu”)
+APPEND name test => add “test” to name
+GET name => (“alibuluttest”)
+
+SET number 10
+INCR number => increase number by one.
+INCR number
+GET number => (“12”)
+INCRBY number 13 => increase number by 13
+GET number => (“25”)
+DECR number => decrease number by 1
+GET number => (“24”)
+DECR number 5 => decrease number by 5
+GET number => (“19”)
+
+2- List
+
+LPUSH books book1 => to save book1 to books list. If there is no books list it’ll be created automatically.
+LPUSH books book2 => to save book2 to the beginning of the books list. 
+RPUSH books book3 => to save book3 to the end of the books list.
+(book2, book1, book3)
+LRANGE books 0 -1 => get all the values => (book2, book1, book3)
+LRANGE books 1 2 => start to get value starting from 1st index until reaches 2nd index. 1 and 2 both inclusive. => (book1, book3)
+LPOP books => removes the first item of the books.
+RPOP books => removes the last item of the books.
+LINDEX books 2 => get the data whose index is 2. => (book3)
+
+
+3- Set (Same with List. First difference is that every data should be unique inside of one set. 
+Second one is that when we add new data to the Set, it’ll be placed randomly. 
+We cannot choose whether to add to the beginning or to the end of the list.)
+
+SADD colors blue => to save blue to colors set. If there is no colors set it’ll be created automatically.
+SADD colors red
+SADD colors blue => ERROR. Because every data inside of a set should be unique.
+SADD colors green
+SMEMBERS colors => to read data inside of the set => (red, green, blue) => as we can see, it keeps saving data randomly inside of the set.
+SREM colors green => to remove green inside of colors set.
+
+4- Sorted Set (Same with Set. Only difference is that by using Sorted Set, we are able to choose where we want to place the newly added data. 
+It is sorted by score points. Values have to be unique like a normal Set but score points could be the same.)
+
+ZADD books 1 book1 => add book1 to books sorted set by using 1 score point.
+ZADD books 5 book2 => add book2 to books sorted set by using 5 score point.
+ZADD books 10 book3
+ZADD books 3 book4
+ZRANGE books 0 -1 => get all data => (book1, book4, book2, book3)
+ZADD books 3 book5 => we can add new data whose score point is same with other data. It’ll be placed right after book4. Because their score points’ are the same and book5 created later.
+ZRANGE books 0 -1 WITHSCORES => get all the data with score points. (book1, 1, book4, 3, book5, 3, book2, 5, book3, 10)
+ZREM books book3 => it’ll remove book3 from books.
+
+5- Hash(Key-Value Pair)
+
+HMSET products pen $10 => add pen as key and $10 as value to products hash.
+HGET products pen => get value of the pen inside of products hash => (“$10”)
+HDEL products pen => remove pen key-value pair inside of products.
+HMSET products bag $20
+HMSET products book $50
+HGETALL products => it’ll get all key-value pairs inside of products hash. => (“bag”, “$20”, book, “$50”)
