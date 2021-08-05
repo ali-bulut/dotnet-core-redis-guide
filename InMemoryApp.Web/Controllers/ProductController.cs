@@ -39,6 +39,13 @@ namespace InMemoryApp.Web.Controllers
                 // because program cannot remove any of the old keys and so cannot add new data.
                 options.Priority = CacheItemPriority.High;
 
+                // this method is fired when the key is removed from the memory.
+                options.RegisterPostEvictionCallback((key, value, reason, state) =>
+                {
+                    // reason stores that why this key is removed from the memory. (it can be removed because of the expiration time or when the memory is full)
+                    _memoryCache.Set("callback", $"{key} -> {value} => Reason: {reason}");
+                });
+
                 _memoryCache.Set<string>("time", DateTime.Now.ToString(), options);
             }
 
@@ -59,8 +66,10 @@ namespace InMemoryApp.Web.Controllers
         public IActionResult Show()
         {
             _memoryCache.TryGetValue<string>("time", out string timeCache);
+            _memoryCache.TryGetValue<string>("callback", out string callback);
             //ViewBag.time = _memoryCache.Get<string>("time");
             ViewBag.time = timeCache;
+            ViewBag.callback = callback;
 
             return View();
         }
