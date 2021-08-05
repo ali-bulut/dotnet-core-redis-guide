@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using InMemoryApp.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 
@@ -47,6 +48,10 @@ namespace InMemoryApp.Web.Controllers
                 });
 
                 _memoryCache.Set<string>("time", DateTime.Now.ToString(), options);
+
+                Product p = new Product() { Id = 1, Name = "Pencil", Price = 20 };
+                // we don't need to do serialize/deserialize operations. IMemoryCache does it automatically.
+                _memoryCache.Set<Product>("product:1", p);
             }
 
             // third way => if there is already time in memory, it will return the time, if there is not, it will set
@@ -70,6 +75,7 @@ namespace InMemoryApp.Web.Controllers
             //ViewBag.time = _memoryCache.Get<string>("time");
             ViewBag.time = timeCache;
             ViewBag.callback = callback;
+            ViewBag.product = _memoryCache.Get<Product>("product:1");
 
             return View();
         }
