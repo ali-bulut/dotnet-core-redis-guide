@@ -23,6 +23,8 @@ namespace InMemoryApp.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // in order to use InMemory Cache System, we need to add AddMemoryCache service here.
+            services.AddMemoryCache();
             services.AddControllersWithViews();
         }
 
