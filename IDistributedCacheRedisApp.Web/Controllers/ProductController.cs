@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -76,6 +77,23 @@ namespace IDistributedCacheRedisApp.Web.Controllers
             _distributedCache.Remove("product:1:byte");
 
             return View();
+        }
+
+        public IActionResult ImageCache()
+        {
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/test.png");
+            Byte[] imageByte = System.IO.File.ReadAllBytes(path);
+
+            _distributedCache.Set("image", imageByte);
+
+            return View();
+        }
+
+        public IActionResult ImageUrl()
+        {
+            Byte[] imageByte = _distributedCache.Get("image");
+
+            return File(imageByte, "image/png");
         }
     }
 }
