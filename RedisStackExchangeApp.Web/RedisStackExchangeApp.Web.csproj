@@ -7,11 +7,13 @@
   <ItemGroup>
     <None Remove="StackExchange.Redis" />
     <None Remove="Services\" />
+    <None Remove="Views\StringType\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="StackExchange.Redis" Version="2.2.62" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />
+    <Folder Include="Views\StringType\" />
   </ItemGroup>
 </Project>
