@@ -12,7 +12,7 @@ namespace RedisStackExchangeApp.Web.Controllers
     {
         private readonly RedisService _redisService;
         private readonly IDatabase _db;
-        private string setKey = "hashnames";
+        private string setKey = "setnames";
 
         public SetTypeController(RedisService redisService)
         {
