@@ -11,6 +11,7 @@
     <None Remove="Views\StringType %28copy%29\" />
     <None Remove="Views\ListType %28copy%29\" />
     <None Remove="Views\SetType %28copy%29\" />
+    <None Remove="Views\SortedSetType %28copy%29\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="StackExchange.Redis" Version="2.2.62" />
@@ -21,5 +22,6 @@
     <Folder Include="Views\ListType\" />
     <Folder Include="Views\SetType\" />
     <Folder Include="Views\SortedSetType\" />
+    <Folder Include="Views\HashType\" />
   </ItemGroup>
 </Project>
