@@ -8,6 +8,7 @@
     <None Remove="StackExchange.Redis" />
     <None Remove="Services\" />
     <None Remove="Views\StringType\" />
+    <None Remove="Views\StringType %28copy%29\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="StackExchange.Redis" Version="2.2.62" />
@@ -15,5 +16,6 @@
   <ItemGroup>
     <Folder Include="Services\" />
     <Folder Include="Views\StringType\" />
+    <Folder Include="Views\StringType %28copy%29\" />
   </ItemGroup>
 </Project>
